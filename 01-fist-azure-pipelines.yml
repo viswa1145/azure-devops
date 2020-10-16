@@ -13,7 +13,7 @@ pool:
 jobs:
 - job: job1
   steps:
-  - script: echo Hello, world from build !
+  - script: echo Job1 - Hello, world!
     displayName: 'Run a one-line script'
 
   - script: |
@@ -22,5 +22,5 @@ jobs:
     displayName: 'Run a multi-line script'
 -job: job2
   steps:
-  - script: echo Hello, world from Deploy !
+  - script: echo Job2 - Hello, world!
     displayName: 'Run a one-line script'
