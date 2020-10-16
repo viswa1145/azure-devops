@@ -31,7 +31,7 @@ stages:
     environment: Qa
   dependsOn: Build
   jobs:
-  - job: $(environment)Deployjob  
+  - job: QaDeployjob  
     steps:
     - script: echo QaDeployjob
       displayName: 'Run a one-line script'
