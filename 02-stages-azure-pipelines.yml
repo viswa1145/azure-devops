@@ -11,24 +11,31 @@ stages:
     steps:
     - script: echo firstbuildjob
       displayName: 'Run a one-line script'
+    - bash: echo $(Newname)
   - job: secondbuildjob  
     steps:
     - script: echo secondbuildjob
       displayName: 'Run a one-line script'
 - stage: DevDeploy
+  variables:
+    environment: Dev
   dependsOn: Build
   jobs:
   - job: DevDeployjob  
     steps:
-    - script: echo DevDeployjob
+    - script: echo $(environment)Deployjob
       displayName: 'Run a one-line script'
+    - bash: echo $(environment)Deployjob
 - stage: QaDeploy
+  variables:
+    environment: Qa
   dependsOn: Build
   jobs:
-  - job: QaDeployjob  
+  - job: $(environment)Deployjob  
     steps:
     - script: echo QaDeployjob
       displayName: 'Run a one-line script'
+    - bash: echo $(environment)Deployjob
 - stage: ProducationDeploy
   dependsOn:
   - QaDeploy
