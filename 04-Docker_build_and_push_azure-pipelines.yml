@@ -22,7 +22,7 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'Dockerhub'
-        repository: 'azure-devops'
+        repository: 'currency'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
