@@ -1,0 +1,75 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: firstbuildjob
+    steps:
+    - bash: echo Build FirstJob
+    - bash: echo $(PipelineLevelVariable)
+    - bash: echo $(Build.BuildNumber)
+    - bash: echo $(Build.BuildId)
+    - bash: echo $(Build.SourceBranchName)
+    - bash: echo $(Build.SourcesDirectory)
+    - bash: echo $(System.DefaultWorkingDirectory)
+    - bash: ls -R $(System.DefaultWorkingDirectory)
+    - bash: echo $(Build.ArtifactStagingDirectory)
+    - bash: java -version
+    - bash: node --version
+    - bash: python --version 
+    - bash: mvn -version 
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          **/*.tf
+          **/*.yaml
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+    # steps:
+    # - script: echo firstbuildjob
+    #   displayName: 'Run a one-line script'
+    # - bash: echo $(Newname)
+#   - job: secondbuildjob  
+#     steps:
+#     - script: echo secondbuildjob
+#       displayName: 'Run a one-line script'
+# - stage: DevDeploy
+#   variables:
+#     environment: Dev
+#   dependsOn: Build
+#   jobs:
+#   - job: DevDeployjob  
+#     steps:
+#     - script: echo $(environment)Deployjob
+#       displayName: 'Run a one-line script'
+#     - bash: echo $(environment)Deployjob
+# - stage: QaDeploy
+#   variables:
+#     environment: Qa
+#   dependsOn: Build
+#   jobs:
+#   - job: QaDeployjob  
+#     steps:
+#     - script: echo QaDeployjob
+#       displayName: 'Run a one-line script'
+#     - bash: echo $(environment)Deployjob
+# - stage: ProducationDeploy
+#   dependsOn:
+#   - QaDeploy
+#   - DevDeploy
+#   jobs:
+#   - job: ProducationDeploy  
+#     steps:
+#     - script: echo ProducationDeploy
+#       displayName: 'Run a one-line script'
